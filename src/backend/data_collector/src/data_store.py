@@ -90,7 +90,7 @@ class DataStore:
                 # First we load existing data into a dict.
                 l_file_data = json.load(l_file)
                 
-                l_datas = l_file_data[a_category]
+                l_datas = l_file_data.get(a_category, [])
 
                 if a_category in self.__m_data_buffer:
                     l_datas.extend(self.__m_data_buffer[a_category])
@@ -104,10 +104,9 @@ class DataStore:
     def __init__(self, a_file_name):
         if not DataStore.instance:
             DataStore.instance = DataStore.__DataStore()
-            DataStore.instance.setFile(a_file_name)
-        else:
-            DataStore.instance.m_file_name = a_file_name
-
+            
+        DataStore.instance.setFile(a_file_name)
+        
     '''
     '''
     def __getattr__(self, name):
@@ -117,7 +116,7 @@ class DataStore:
 def main():
     d = DataStore("log.json")
 
-    print(json.dumps(d.getCategoryData("wind_gauge")))
+    print(json.dumps(d.getCategoryData("rain_gauge")))
 
 if __name__ == '__main__':
     main()
